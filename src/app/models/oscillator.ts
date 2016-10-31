@@ -8,22 +8,23 @@ export class Oscillator {
   private playing: boolean = false;
 
   private decay: number = 1;
-  private volume: number = 1;
+  private volume: number = 0.5;
 
   constructor(private frequency: number,
               private waveForm: string,
               private audioContext: AudioContext,
               private compressor: DynamicsCompressorNode) {
 
-    // establish base frequency
+    // establish base
     this.baseFrequency = frequency;
     this.gainNode = audioContext.createGain();
     this.gainNode.gain.value = 0;
-    this.gainNode.connect(compressor);
     this.oscillator = audioContext.createOscillator();
     this.oscillator.connect(this.gainNode);
+    this.gainNode.connect(compressor);
+    this.oscillator.type = waveForm;
     this.oscillator.frequency.value = this.baseFrequency;
-    this.oscillator.start(0);
+    this.oscillator.start();
 
     this.noteActions$.subscribe(
       (action: string) => {
@@ -53,7 +54,7 @@ export class Oscillator {
       return;
     }
     this.playing = true;
-    this.gainNode.gain.linearRampToValueAtTime(this.volume, this.audioContext.currentTime + 0.1);
+    this.gainNode.gain.linearRampToValueAtTime(this.volume, this.audioContext.currentTime + 0.2);
   }
 
   private doStop() {

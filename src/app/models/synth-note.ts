@@ -13,6 +13,7 @@ export class SynthNote {
               private audioContext: AudioContext,
               private compressor: DynamicsCompressorNode) {
     this.oscillator = new Oscillator(noteFreq, waveForm, audioContext, compressor);
+    this.oscillator.stop();
   }
 
   public play() {

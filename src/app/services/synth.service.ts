@@ -30,14 +30,8 @@ export class SynthService {
 
   constructor(noteTranslationService: NoteTranslationService) {
     
-    this.messageQueue$ = new Subject<SynthInputMessage>();
-
-    // configure compressor
-    this.compressor.threshold.value = 0.0; // this is the pitfall, leave some headroom
-    this.compressor.knee.value = 0.0; // brute force
-    this.compressor.attack.value = 0.005; // 5ms attack
-    this.compressor.release.value = 0.050; // 50ms release
-    this.compressor.connect(this.destination);
+  this.messageQueue$ = new Subject<SynthInputMessage>();
+  this.compressor.connect(this.destination);
     
     // configure note mappings
     this.notes = {
