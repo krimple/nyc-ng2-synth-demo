@@ -1,9 +1,14 @@
 import { Subject } from 'rxjs';
+
+class OscillatorInstruction {
+  constructor(public command: string, public value: number = 0) {}
+}
+
 export class Oscillator {
   private gainNode: GainNode;
   private oscillator: OscillatorNode;
 
-  private noteActions$: Subject<string> = new Subject<string>();
+  private noteActions$: Subject<OscillatorInstruction> = new Subject<OscillatorInstruction>();
   private baseFrequency: number;
   private playing: boolean = false;
 
@@ -27,13 +32,16 @@ export class Oscillator {
     this.oscillator.start();
 
     this.noteActions$.subscribe(
-      (action: string) => {
-        switch(action) {
+      (action: OscillatorInstruction) => {
+        switch(action.command) {
           case 'play':
             this.doPlay();
             break;
           case 'stop':
             this.doStop();
+            break;
+          case 'bend':
+            this.doBend(action.value);
             break;
         }
       }
@@ -41,13 +49,16 @@ export class Oscillator {
   }
 
   play() {
-    this.noteActions$.next("play");
+    this.noteActions$.next(new OscillatorInstruction('play'));
   }
 
   stop() {
-    this.noteActions$.next("stop");
+    this.noteActions$.next(new OscillatorInstruction('stop'));
   }
 
+  bend(value: number) {
+    this.noteActions$.next(new OscillatorInstruction('bend', value));
+  }
 
   private doPlay() {
     if (this.playing) {
@@ -69,7 +80,7 @@ export class Oscillator {
     return this.playing;
   }
 
-  bend(value: number) {
+  doBend(value: number) {
     this.oscillator.frequency.value = this.baseFrequency + value;
   }
 

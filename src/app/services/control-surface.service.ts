@@ -1,12 +1,11 @@
 import { Injectable } from '@angular/core';
-import { SynthService } from './synth.service';
 import { SynthInputMessage, MESSAGE_TYPE } from '../models/synth-input-message';
 import { Observable } from 'rxjs';
 import { WebSocketSubject } from 'rxjs/observable/dom/WebSocketSubject';
 
 @Injectable()
 export class ControlSurfaceService {
-  private waveforms: Array<string> = ['sawtooth', 'sine', 'square', 'triangle'];
+  /*private waveforms: Array<string> = ['sawtooth', 'sine', 'square', 'triangle'];
 
   surfaceWSSubject: WebSocketSubject<any>;
 
@@ -58,5 +57,6 @@ export class ControlSurfaceService {
       this.synthService.receiveMessage(new SynthInputMessage(MESSAGE_TYPE.BEND, ((obj[2] - 511) / 10.0) + ''));
     });
   }
+  */
 
 }

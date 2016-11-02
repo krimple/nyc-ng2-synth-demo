@@ -5,12 +5,13 @@ import { HttpModule } from '@angular/http';
 
 import { AppComponent } from './app.component';
 import { KeyboardComponent } from './keyboard/keyboard.component';
-import { SynthService } from './services/synth.service';
 import { ControlPanelComponent } from './control-panel/control-panel.component';
 import { ControlSurfaceService } from './services/control-surface.service';
-import { NoteTranslationService } from './services/note-translation.service';
-import { TouchBoardMidiService } from './services/touch-board-midi.service';
 import { SwitchboardService } from './services/switchboard-service';
+import { MidiInputService } from './pipeline/inputs/midi-input.service';
+import { AudioOutputService } from './pipeline/outputs/audio-output.service';
+import { SynthesisService } from './pipeline/synthesis/synthesis.service';
+import { PipelineService } from './pipeline/pipeline.service';
 
 @NgModule({
   declarations: [
@@ -24,11 +25,13 @@ import { SwitchboardService } from './services/switchboard-service';
     HttpModule
   ],
   providers: [
-    SynthService,
     ControlSurfaceService,
     SwitchboardService,
-    TouchBoardMidiService,
-    NoteTranslationService],
+    MidiInputService,
+    AudioOutputService,
+    SynthesisService,
+    PipelineService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule {

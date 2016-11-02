@@ -1,8 +1,6 @@
 import { Component } from '@angular/core';
-import { SynthService } from './services/synth.service';
-import { SynthInputMessage, MESSAGE_TYPE } from './models/synth-input-message';
-import { TouchBoardMidiService } from './services/touch-board-midi.service';
 import { SwitchboardService } from './services/switchboard-service';
+import { PipelineService } from './pipeline/pipeline.service';
 
 @Component({
   selector: 'polysynth-root',
@@ -13,23 +11,9 @@ import { SwitchboardService } from './services/switchboard-service';
   `
 })
 export class AppComponent {
-  constructor(private synth: SynthService, private midi: TouchBoardMidiService) {
+  constructor(private pipelineService: PipelineService) {
 
     let self = this;
-    // hook midi device into synth stream, IF exists
-    midi.setup()
-      .then(
-        () => {
-          midi.midiNotes$.subscribe((noteMessage) => {
-            self.synth.receiveMessage(noteMessage);
-          })
-        },
-        () => {
-          console.log('no midi for you.');
-        }
-    );
-  }
-  sendMessage(event: SynthInputMessage) {
-    this.synth.receiveMessage(event);
+    pipelineService.begin();
   }
 }
