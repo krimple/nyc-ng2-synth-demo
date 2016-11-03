@@ -1,14 +1,14 @@
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 import { SynthNote } from '../../models/synth-note';
-import { NoteMessage, NoteOnMessage, NoteOffMessage } from '../../services/switchboard-service';
+import {SynthNoteMessage, SynthNoteOff, SynthNoteOn} from "../../models/synth-note-message";
 
 @Injectable()
 export class SynthesisService {
 
   // send a message to the synth upon receipt from outside world
-  public receiveMessage(message: NoteMessage) {
-    this.notes.next(message);
+  public receiveMessage(message: SynthNoteMessage) {
+    this.noteStream$.next(message);
   }
 
   // TODO - figure out how to modify on the fly (event?)
@@ -18,12 +18,12 @@ export class SynthesisService {
   private notes: any;
 
   // central switchboard observable / observer
-  public noteStream$: Subject<NoteMessage>;
+  public noteStream$: Subject<SynthNoteOn| SynthNoteOff>;
 
   constructor() { } 
   
   public setup(audioContext: AudioContext, targetNode: AudioNode) {
-    this.noteStream$ = new Subject<NoteMessage>();
+    this.noteStream$ = new Subject<SynthNoteOn| SynthNoteOff>();
     this.setupNotes(audioContext, targetNode);
     this.setupSubscriptions();
   }
@@ -84,22 +84,17 @@ export class SynthesisService {
 
   private setupSubscriptions() {
     var self = this;
-    // play notes when key is down
     this.noteStream$
-      .filter((message: NoteMessage) => message instanceof NoteOnMessage)
       .subscribe(
-        (message: NoteMessage) => {
+        (message: SynthNoteMessage) => {
           let synthNote: SynthNote = self.notes[message.note];
-          synthNote.play();
-        }
-      );
-    // stop notes when key is up
-    this.noteStream$
-      .filter((message: NoteMessage) => message instanceof NoteOffMessage)
-      .subscribe(
-        (message: NoteMessage) => {
-          let synthNote: SynthNote = self.notes[message.note];
-          synthNote.stop();
+          if (message.action === "OFF")  {
+              synthNote.stop();
+          } else if (message.action === "ON") {
+              synthNote.play();
+          } else {
+              console.log(JSON.stringify(message));
+          }
         }
       );
   }

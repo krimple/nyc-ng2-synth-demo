@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { SwitchboardService } from './services/switchboard-service';
 import { PipelineService } from './pipeline/pipeline.service';
 
 @Component({
@@ -15,5 +14,8 @@ export class AppComponent {
 
     let self = this;
     pipelineService.begin();
+  }
+  sendMessage(event) {
+    console.log('sending', event);
   }
 }

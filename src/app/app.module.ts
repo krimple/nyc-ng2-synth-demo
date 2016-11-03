@@ -7,7 +7,6 @@ import { AppComponent } from './app.component';
 import { KeyboardComponent } from './keyboard/keyboard.component';
 import { ControlPanelComponent } from './control-panel/control-panel.component';
 import { ControlSurfaceService } from './services/control-surface.service';
-import { SwitchboardService } from './services/switchboard-service';
 import { MidiInputService } from './pipeline/inputs/midi-input.service';
 import { AudioOutputService } from './pipeline/outputs/audio-output.service';
 import { SynthesisService } from './pipeline/synthesis/synthesis.service';
@@ -26,7 +25,6 @@ import { PipelineService } from './pipeline/pipeline.service';
   ],
   providers: [
     ControlSurfaceService,
-    SwitchboardService,
     MidiInputService,
     AudioOutputService,
     SynthesisService,

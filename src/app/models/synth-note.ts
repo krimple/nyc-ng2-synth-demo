@@ -43,11 +43,12 @@ export class SynthNote {
   constructor(note: string, private audioContext: AudioContext, private audioBusNode: AudioNode) {
     this._note = note;
     this._frequency = SynthNote.noteMappings[note];
+    this.oscillator = audioContext.createOscillator();
     this.oscillator.frequency.value = this._frequency;
 
     // TODO - externalize and control in one shot... Maybe
     this.oscillator.type = 'sawtooth';
-    this.oscillator = audioContext.createOscillator();
+    this.oscillator.start();
   }
 
   get note(): string {
@@ -59,10 +60,12 @@ export class SynthNote {
   }
 
   public play() {
+    console.log('playing', this._note);
     this.oscillator.connect(this.audioBusNode);
   }
 
   public stop() {
+    console.log('stopping', this._note);
     this.oscillator.disconnect(this.audioBusNode);
   }
 }

@@ -1,6 +1,6 @@
-import { NoteMessage, NoteOnMessage, NoteOffMessage } from '../../services/switchboard-service';
 import { Subject } from 'rxjs';
 import { Injectable } from '@angular/core';
+import {SynthNoteMessage, SynthNoteOff, SynthNoteOn} from "../../models/synth-note-message";
 
 @Injectable()
 export class MidiInputService {
@@ -19,7 +19,7 @@ export class MidiInputService {
     84: 'C8', 85: 'D#8', 86: 'F8', 87: 'F#8', 88: 'G8', 89: 'A#8',
   };
 
-  private _noteOutputStream: Subject<NoteMessage>;
+  private _noteOutputStream: Subject<SynthNoteMessage>;
 
   get noteStream$() {
     return this._noteOutputStream;
@@ -27,7 +27,7 @@ export class MidiInputService {
 
   setup(): Promise<void> {
     // will emit notes to target
-    this._noteOutputStream = new Subject<NoteMessage>();
+    this._noteOutputStream = new Subject<SynthNoteMessage>();
 
     return new Promise((resolve, reject) => {
       if (window.navigator['requestMIDIAccess']) {
@@ -49,7 +49,11 @@ export class MidiInputService {
   }
 
   public connectDefaultInput(): Promise<void> {
-    return this.connect(this.inputs[0]);
+    if (this.inputs && this.inputs.length > 0) {
+        return this.connect(this.inputs[0]);
+    } else {
+        alert('no inputs');
+    }
   }
 
   connect(input): Promise<void> {
@@ -80,11 +84,11 @@ export class MidiInputService {
         case 144:
           // note on for midi message with proper number
           this._noteOutputStream.next(
-            new NoteOnMessage(this.noteTransforms[message.data[1]]));
+            new SynthNoteOn(this.noteTransforms[message.data[1]]));
           break;
         case 128:
            this._noteOutputStream.next(
-            new NoteOffMessage(this.noteTransforms[message.data[1]]));
+            new SynthNoteOff(this.noteTransforms[message.data[1]]));
           break;
         default:
           // TODO not sure

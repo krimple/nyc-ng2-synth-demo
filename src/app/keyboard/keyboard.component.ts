@@ -1,5 +1,7 @@
 import { Component, EventEmitter, Output } from '@angular/core';
 import { SynthInputMessage, MESSAGE_TYPE } from '../models/synth-input-message';
+import {SynthNoteOn, SynthNoteOff} from "../models/synth-note-message";
+import {PipelineService} from "../pipeline/pipeline.service";
 
 @Component({
   selector: 'polysynth-keyboard',
@@ -7,13 +9,14 @@ import { SynthInputMessage, MESSAGE_TYPE } from '../models/synth-input-message';
   styleUrls: ['./keyboard.component.css']
 })
 export class KeyboardComponent {
-  @Output() onnote = new EventEmitter<SynthInputMessage>();
+
+  constructor(private pipelineService: PipelineService) { }
 
   playNote(noteValue) {
     console.log('note value is', noteValue);
-    this.onnote.emit( new SynthInputMessage(MESSAGE_TYPE.KEYDOWN, null, noteValue));
+    this.pipelineService.noteStream$.next(new SynthNoteOn(noteValue));
   }
   stopNote(noteValue) {
-    this.onnote.emit( new SynthInputMessage(MESSAGE_TYPE.KEYUP, null, noteValue));
+      this.pipelineService.noteStream$.next(new SynthNoteOff(noteValue));
   }
 }
