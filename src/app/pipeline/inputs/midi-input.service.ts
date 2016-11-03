@@ -59,7 +59,8 @@ export class MidiInputService {
   connect(input): Promise<void> {
     let service = this;
     return new Promise<void>((resolve, reject) => {
-      input.open()
+        debugger;
+      input.value.open()
         .then(
           (channelInputStream$: any) => {
             channelInputStream$.onmidimessage = (message) => {
