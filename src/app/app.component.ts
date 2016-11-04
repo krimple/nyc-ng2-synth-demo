@@ -16,6 +16,6 @@ export class AppComponent {
     pipelineService.begin();
   }
   sendMessage(event) {
-    console.log('sending', event);
+    //console.log('sending', event);
   }
 }

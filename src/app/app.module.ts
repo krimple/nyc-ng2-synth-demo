@@ -6,7 +6,6 @@ import { HttpModule } from '@angular/http';
 import { AppComponent } from './app.component';
 import { KeyboardComponent } from './keyboard/keyboard.component';
 import { ControlPanelComponent } from './control-panel/control-panel.component';
-import { ControlSurfaceService } from './services/control-surface.service';
 import { MidiInputService } from './pipeline/inputs/midi-input.service';
 import { AudioOutputService } from './pipeline/outputs/audio-output.service';
 import { SynthesisService } from './pipeline/synthesis/synthesis.service';
@@ -24,7 +23,6 @@ import { PipelineService } from './pipeline/pipeline.service';
     HttpModule
   ],
   providers: [
-    ControlSurfaceService,
     MidiInputService,
     AudioOutputService,
     SynthesisService,
@@ -34,5 +32,5 @@ import { PipelineService } from './pipeline/pipeline.service';
 })
 export class AppModule {
   // force booting the service instance w/o injecting into a component
-  constructor(private controlSurfaceService: ControlSurfaceService) { }
+  constructor() { }
 }

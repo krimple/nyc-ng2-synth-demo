@@ -1,5 +1,4 @@
 import { Component, EventEmitter, Output } from '@angular/core';
-import { SynthInputMessage, MESSAGE_TYPE } from '../models/synth-input-message';
 import {SynthNoteOn, SynthNoteOff} from "../models/synth-note-message";
 import {PipelineService} from "../pipeline/pipeline.service";
 
@@ -10,10 +9,11 @@ import {PipelineService} from "../pipeline/pipeline.service";
 })
 export class KeyboardComponent {
 
+  keyboardType: string = 'ionic';
   constructor(private pipelineService: PipelineService) { }
 
   playNote(noteValue) {
-    console.log('note value is', noteValue);
+    //console.log('note value is', noteValue);
     this.pipelineService.noteStream$.next(new SynthNoteOn(noteValue));
   }
   stopNote(noteValue) {

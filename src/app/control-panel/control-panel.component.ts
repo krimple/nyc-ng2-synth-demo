@@ -7,16 +7,9 @@ import { MidiInputService } from '../pipeline/inputs/midi-input.service';
   templateUrl: './control-panel.component.html',
   styleUrls: ['./control-panel.component.css']
 })
-export class ControlPanelComponent implements OnInit {
+export class ControlPanelComponent {
 
   constructor(private midiInputService: MidiInputService) { }
-
-  ngOnInit() {
-    let self = this;
-    this.midiInputService.setup()
-  }
-
-
 
   emitSysex() {
     // TODO

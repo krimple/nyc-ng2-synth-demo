@@ -30,18 +30,26 @@ export class MidiInputService {
     this._noteOutputStream = new Subject<SynthNoteMessage>();
 
     return new Promise((resolve, reject) => {
-      if (window.navigator['requestMIDIAccess']) {
+      if ("navigator" in window && "requestMIDIAccess" in window['navigator']) {
         let service = this;   // async callbacks from other objects like navigator don't fix 'this'
-        window.navigator['requestMIDIAccess']().then(
-          (access) => {
-            let loopCondition = access.inputs.keys();
-            while (true) {
-              let result = loopCondition.next();
-              if (result.done === true) break;
-              service.inputs.push({key: result.value, value: access.inputs.get(result.value)});
-            }
-            resolve();
-          });
+        try {
+            window.navigator['requestMIDIAccess']().then(
+                (access) => {
+                    let loopCondition = access.inputs.keys();
+                    while (true) {
+                        let result = loopCondition.next();
+                        if (result.done === true) {
+                            break;
+                        }
+                        // otherwise let's add the input we found
+                        service.inputs.push({key: result.value, value: access.inputs.get(result.value)});
+                    }
+                    resolve();
+                });
+        } catch (e) {
+            console.log('MIDI Access denied, no stairway :(');
+            reject();
+        }
       } else {
         reject();
       }
@@ -59,7 +67,6 @@ export class MidiInputService {
   connect(input): Promise<void> {
     let service = this;
     return new Promise<void>((resolve, reject) => {
-        debugger;
       input.value.open()
         .then(
           (channelInputStream$: any) => {

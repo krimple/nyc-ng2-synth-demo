@@ -1,8 +1,3 @@
-import {Subject} from 'rxjs';
-import {SynthInputMessage, MESSAGE_TYPE} from './synth-input-message';
-import {Oscillator} from './oscillator';
-import 'rxjs/add/operator/filter';
-
 export class SynthNoteMessage {
   protected _note: string;
   protected _action: string;

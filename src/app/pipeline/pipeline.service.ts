@@ -4,6 +4,7 @@ import { AudioOutputService } from './outputs/audio-output.service';
 import {Injectable} from "@angular/core";
 import {Subject} from "rxjs";
 import {SynthNoteMessage, SynthNoteOn, SynthNoteOff} from "../models/synth-note-message";
+
 @Injectable()
 export class PipelineService {
 
@@ -15,13 +16,15 @@ export class PipelineService {
   constructor(private midiInputService: MidiInputService,
               private synthesisService: SynthesisService,
               private audioOutputService: AudioOutputService) {
-    try {
-      this.audioContext = (new window['AudioContext']() || new window['webkitAudioContext']());
-      console.log('********* AUDIO CONTEXT CREATED ', this.audioContext);
-    } catch(e) {
-      alert('no audio context available.');
-      console.error(e);
-    }
+      this.audioContext = window['theAudioContext'];
+      /*      if ('webkitAudioContext' in window) {
+          this.audioContext = new window['webkitAudioContext']();
+      } else if ('AudioContext' in window) {
+          this.audioContext = new window['AudioContext']();
+      } else {
+          alert('no audio context available.');
+      }
+      */
   }
 
   begin() {
@@ -46,7 +49,10 @@ export class PipelineService {
           } else {
             console.log('no inputs available');
           }
-        }
+        },
+          () => {
+              console.log("MIDI Unavailable");
+          }
       );
 
     // now send all note inputs coming from midi and non-midi sources (web page components, etc)

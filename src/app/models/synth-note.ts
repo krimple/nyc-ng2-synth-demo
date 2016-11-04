@@ -1,6 +1,3 @@
-import {Subject} from 'rxjs';
-import {SynthInputMessage, MESSAGE_TYPE} from './synth-input-message';
-import {Oscillator} from './oscillator';
 import 'rxjs/add/operator/filter';
 
 export class SynthNote {
@@ -60,13 +57,17 @@ export class SynthNote {
   }
 
   public play() {
-    console.log('playing', this._note);
+    //console.log('playing', this._note);
     this.oscillator.connect(this.audioBusNode);
   }
 
   public stop() {
-    console.log('stopping', this._note);
-    this.oscillator.disconnect(this.audioBusNode);
+    //console.log('stopping', this._note);
+    try {
+        this.oscillator.disconnect(this.audioBusNode);
+    } catch (e) {
+        console.error('tried to disconnect, error was', e);
+    }
   }
 }
 
