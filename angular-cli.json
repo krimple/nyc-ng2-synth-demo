@@ -15,6 +15,7 @@
       "prefix": "polysynth",
       "mobile": false,
       "styles": [
+        "../node_modules/bootstrap/dist/css/bootstrap.min.css",
         "styles.css"
       ],
       "scripts": [

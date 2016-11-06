@@ -5,8 +5,11 @@ import { PipelineService } from './pipeline/pipeline.service';
   selector: 'polysynth-root',
   // templateUrl: './app.component.html',
   template: `
+  <div class="container">
     <polysynth-control-panel (onsettingchange)="sendMessage($event)"></polysynth-control-panel>
+    <hr>
     <polysynth-keyboard (onnote)="sendMessage($event)"></polysynth-keyboard>
+  </div>
   `
 })
 export class AppComponent {

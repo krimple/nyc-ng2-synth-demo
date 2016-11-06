@@ -4,6 +4,7 @@ import { AudioOutputService } from './outputs/audio-output.service';
 import {Injectable} from "@angular/core";
 import {Subject} from "rxjs";
 import {SynthNoteMessage, SynthNoteOn, SynthNoteOff} from "../models/synth-note-message";
+import {DrumPCMTriggeringService} from './synthesis/drum-pcm-triggering.service';
 
 @Injectable()
 export class PipelineService {
@@ -15,16 +16,9 @@ export class PipelineService {
 
   constructor(private midiInputService: MidiInputService,
               private synthesisService: SynthesisService,
-              private audioOutputService: AudioOutputService) {
+              private audioOutputService: AudioOutputService,
+              private drumPCMTriggeringService: DrumPCMTriggeringService) {
       this.audioContext = window['theAudioContext'];
-      /*      if ('webkitAudioContext' in window) {
-          this.audioContext = new window['webkitAudioContext']();
-      } else if ('AudioContext' in window) {
-          this.audioContext = new window['AudioContext']();
-      } else {
-          alert('no audio context available.');
-      }
-      */
   }
 
   begin() {
@@ -34,6 +28,9 @@ export class PipelineService {
 
     // setup synth
     this.synthesisService.setup(this.audioContext, this.audioOutputService.mainMixCompressor);
+
+    // setup drum service
+    this.drumPCMTriggeringService.setup(this.audioContext);
 
     // setup inputs
     this.midiInputService.setup()
