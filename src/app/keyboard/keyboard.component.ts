@@ -11,19 +11,12 @@ import { DrumPCMTriggeringService } from '../pipeline/synthesis/drum-pcm-trigger
 export class KeyboardComponent {
 
   keyboardType: string = 'ionic';
-  constructor(private pipelineService: PipelineService,
-              private drumService: DrumPCMTriggeringService) { }
-
-  playBass() {
-    console.log('playing drum');
-    this.drumService.triggers.bass.trigger$.next();
-  }
+  constructor(private pipelineService: PipelineService) { }
 
   playNote(noteValue) {
-    //console.log('note value is', noteValue);
     this.pipelineService.noteStream$.next(new SynthNoteOn(noteValue));
   }
   stopNote(noteValue) {
-      this.pipelineService.noteStream$.next(new SynthNoteOff(noteValue));
+    this.pipelineService.noteStream$.next(new SynthNoteOff(noteValue));
   }
 }

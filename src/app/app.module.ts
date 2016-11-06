@@ -11,10 +11,12 @@ import { AudioOutputService } from './pipeline/outputs/audio-output.service';
 import { SynthesisService } from './pipeline/synthesis/synthesis.service';
 import { PipelineService } from './pipeline/pipeline.service';
 import { DrumPCMTriggeringService } from './pipeline/synthesis/drum-pcm-triggering.service';
+import {DrumSetComponent} from "./keyboard/drum-set.component";
 
 @NgModule({
   declarations: [
     AppComponent,
+    DrumSetComponent,
     KeyboardComponent,
     ControlPanelComponent
   ],
