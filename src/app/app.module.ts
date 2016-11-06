@@ -10,6 +10,7 @@ import { MidiInputService } from './pipeline/inputs/midi-input.service';
 import { AudioOutputService } from './pipeline/outputs/audio-output.service';
 import { SynthesisService } from './pipeline/synthesis/synthesis.service';
 import { PipelineService } from './pipeline/pipeline.service';
+import { DrumPCMTriggeringService } from './pipeline/synthesis/drum-pcm-triggering.service';
 
 @NgModule({
   declarations: [
@@ -26,7 +27,8 @@ import { PipelineService } from './pipeline/pipeline.service';
     MidiInputService,
     AudioOutputService,
     SynthesisService,
-    PipelineService
+    PipelineService,
+    DrumPCMTriggeringService
   ],
   bootstrap: [AppComponent]
 })
