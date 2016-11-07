@@ -1,18 +1,18 @@
 import {Component} from "@angular/core";
-import {DrumPCMTriggeringService} from "../pipeline/synthesis/drum-pcm-triggering.service";
+import {DrumPCMTriggeringService} from "../../pipeline/synthesis/drum-pcm-triggering.service";
 @Component({
    selector: 'synth-drumset',
    template: `
 <div class="row">
-  <div class="col-xs=2">
-      <button (touchstart)="play('bass')" class="alert">BASS></button>
-      <button (touchstart)="play('snare')" class="alert">SNARE</button>
-      <button (touchstart)="play('tom1')" class="btn btn-secondary btn-lg">TOM1</button>
-      <button (touchstart)="play('tom2')" class="btn btn-secondary btn-lg">TOM2</button>
-      <button (touchstart)="play('hihat')" class="btn btn-secondary btn-lg">HIHAT</button>
-      <button (touchstart)="play('crash')" class="btn btn-secondary btn-lg">CRASH</button>
-      <button (touchstart)="play('ride')" class="btn btn-secondary btn-lg">RIDE</button>
-  </div>
+  <div class="col-xs-3 ma-3 bg-primary" (touchstart)="play('bass')">Bass<br/><br/></div>
+  <div class="col-xs-3 ma-3 bg-primary" (touchstart)="play('snare')">Snare<br/><br/></div>
+  <div class="col-xs-3 bg-primary" (touchstart)="play('tom1')">Tom1<br/><br/></div>
+  <div class="col-xs-3 bg-primary" (touchstart)="play('tom2')">Tom2<br/><br/></div>
+</div>
+<div class="row">
+  <div class="col-xs-2 bg-primary" (touchstart)="play('hihat')">Hi-Hat<br/><br/></div>
+  <div class="col-xs-2 bg-primary" (touchstart)="play('crash')">Crash<br/><br/></div>
+  <div class="col-xs-2 bg-primary" (touchstart)="play('ride')">Ride<br/><br/></div>
 </div>
    `
 })

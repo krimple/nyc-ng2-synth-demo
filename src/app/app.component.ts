@@ -5,10 +5,25 @@ import { PipelineService } from './pipeline/pipeline.service';
   selector: 'polysynth-root',
   // templateUrl: './app.component.html',
   template: `
-  <div class="container">
-    <polysynth-control-panel (onsettingchange)="sendMessage($event)"></polysynth-control-panel>
-    <hr>
-    <polysynth-keyboard (onnote)="sendMessage($event)"></polysynth-keyboard>
+  <div class="topleft container">
+    <ul class="nav nav-tabs">
+      <li class="nav-item">
+        <a routerLink="piano">Keyboard</a>
+      </li>
+      <li class="nav-item">
+        <a routerLink="blues">Blues</a>
+      </li>
+       <li class="nav-item">
+        <a routerLink="minorblues">Minor Blues</a>
+      </li>
+       <li class="nav-item">
+        <a href="#">Ionic</a>
+      </li>
+       <li class="nav-item">
+        <a routerLink="drums">Drum Set</a>
+      </li>
+    </ul>
+    <router-outlet></router-outlet>
   </div>
   `
 })
