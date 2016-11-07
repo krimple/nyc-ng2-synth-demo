@@ -10,7 +10,7 @@ import { DrumPCMTriggeringService } from '../../pipeline/synthesis/drum-pcm-trig
 })
 export class PianoKeyboardComponent {
 
-  keyboardType: string = 'ionic';
+  keyboardType: string = 'ionian';
   constructor(private pipelineService: PipelineService) { }
 
   playNote(noteValue) {

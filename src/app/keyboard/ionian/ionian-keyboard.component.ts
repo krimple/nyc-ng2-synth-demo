@@ -4,14 +4,10 @@ import {PipelineService} from "../../pipeline/pipeline.service";
 import { DrumPCMTriggeringService } from '../../pipeline/synthesis/drum-pcm-triggering.service';
 
 @Component({
-  templateUrl: 'minor-blues-keyboard.component.html',
-  styles: [
-     ` svg { position: relative; top: 0px; left: 0px; }
-     `
-  ]
-  //styleUrls: ['minor-ionian-keyboard.component.css']
+  templateUrl: 'ionian-keyboard.component.html',
+  styleUrls: ['ionian-keyboard.component.css']
 })
-export class MinorBluesKeyboardComponent {
+export class IonianKeyboardComponent {
 
   keyboardType: string = 'ionian';
   constructor(private pipelineService: PipelineService) { }

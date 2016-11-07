@@ -30,7 +30,7 @@ export class PipelineService {
     this.synthesisService.setup(this.audioContext, this.audioOutputService.mainMixCompressor);
 
     // setup drum service
-    this.drumPCMTriggeringService.setup(this.audioContext);
+    this.drumPCMTriggeringService.setup(this.audioContext, this.audioOutputService.mainMixCompressor);
 
     // setup inputs
     this.midiInputService.setup()

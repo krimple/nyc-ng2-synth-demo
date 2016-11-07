@@ -15,6 +15,7 @@ import {DrumSetComponent} from "./keyboard/drumset/drum-set.component";
 import {BluesKeyboardComponent} from "./keyboard/blues/blues-keyboard.component";
 import {MinorBluesKeyboardComponent} from "./keyboard/minorblues/minor-blues-keyboard.component";
 import {PolysynthRoutingModule} from "./app-routing.module";
+import {IonianKeyboardComponent} from "./keyboard/ionian/ionian-keyboard.component";
 
 @NgModule({
   declarations: [
@@ -23,6 +24,7 @@ import {PolysynthRoutingModule} from "./app-routing.module";
     PianoKeyboardComponent,
     BluesKeyboardComponent,
     MinorBluesKeyboardComponent,
+    IonianKeyboardComponent,
     ControlPanelComponent
   ],
   imports: [

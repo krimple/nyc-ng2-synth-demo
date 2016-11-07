@@ -9,7 +9,7 @@ import { DrumPCMTriggeringService } from '../../pipeline/synthesis/drum-pcm-trig
 })
 export class BluesKeyboardComponent {
 
-  keyboardType: string = 'ionic';
+  keyboardType: string = 'ionian';
   constructor(private pipelineService: PipelineService) { }
 
   playNote(noteValue) {

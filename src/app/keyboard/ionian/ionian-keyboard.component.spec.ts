@@ -1,7 +1,7 @@
 /* tslint:disable:no-unused-variable */
 
 import { TestBed, async } from '@angular/core/testing';
-import { MinorBluesKeyboardComponent } from './minor-blues-keyboard.component';
+import { IonianKeyboardComponent } from './ionian-keyboard.component';
 import {PipelineService} from "../../pipeline/pipeline.service";
 
 describe('Component: Keyboard', () => {

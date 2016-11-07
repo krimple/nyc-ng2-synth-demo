@@ -2,49 +2,85 @@ import {Component} from "@angular/core";
 import {DrumPCMTriggeringService} from "../../pipeline/synthesis/drum-pcm-triggering.service";
 @Component({
    selector: 'synth-drumset',
+   styles: [
+      `.trigger-blocks {
+         display: flex;
+         flex-direction: row;
+         flex-wrap: wrap;
+      }`,
+      `.trigger-block {
+         padding: 5px;
+         margin: 5px;
+         min-width: 175px !important;
+         max-height: 100px !important;
+         color: yellow;
+         font-size: 1.7em;
+         text-align: center;
+         vertical-align: middle;
+         background-color: darkblue;
+      }`
+   ],
    template: `
-<div class="row">
-  <div class="col-xs-3 ma-3 bg-primary" (touchstart)="play('bass')">Bass<br/><br/></div>
-  <div class="col-xs-3 ma-3 bg-primary" (touchstart)="play('snare')">Snare<br/><br/></div>
-  <div class="col-xs-3 bg-primary" (touchstart)="play('tom1')">Tom1<br/><br/></div>
-  <div class="col-xs-3 bg-primary" (touchstart)="play('tom2')">Tom2<br/><br/></div>
-</div>
-<div class="row">
-  <div class="col-xs-2 bg-primary" (touchstart)="play('hihat')">Hi-Hat<br/><br/></div>
-  <div class="col-xs-2 bg-primary" (touchstart)="play('crash')">Crash<br/><br/></div>
-  <div class="col-xs-2 bg-primary" (touchstart)="play('ride')">Ride<br/><br/></div>
-</div>
+  <div class="trigger-blocks">
+  <div class="trigger-block" (touchstart)="play('bass')">Bass</div>
+  <div class="trigger-block" (touchstart)="play('snare')">Snare</div>
+  <div class="trigger-block" (touchstart)="play('flam')">Flam</div>
+  <div class="trigger-block" (touchstart)="play('rimshot')">Rimshot</div>
+  <div class="trigger-block" (touchstart)="play('htrimshot')">T1 Rim</div>
+  <div class="trigger-block" (touchstart)="play('tom1')">Tom1</div>
+  <div class="trigger-block" (touchstart)="play('tom2')">Tom2</div>
+  <div class="trigger-block" (touchstart)="play('hihat')">Closed-Hat</div>
+  <div class="trigger-block" (touchstart)="play('hihatopen')">Open-Hat</div>
+  <div class="trigger-block" (touchstart)="play('crash')">Crash</div>
+  <div class="trigger-block" (touchstart)="play('ride')">Ride</div>
+  <div class="trigger-block" (touchstart)="play('ping')">Ping</div>
+  </div>
    `
 })
 export class DrumSetComponent {
-   constructor(private drumService: DrumPCMTriggeringService) {
+   constructor(private drumService: DrumPCMTriggeringService) { }
 
-   }
-    play(instrument: string) {
+   play(instrument: string) {
         console.log(`playing ${instrument}`);
         switch (instrument) {
             case 'bass':
-                this.drumService.triggers.bass.noteStream$.next('bass');
+                this.drumService.triggers.bass.noteStream$.next();
                 break;
             case 'snare':
-                this.drumService.triggers.snare.noteStream$.next('snare');
+                this.drumService.triggers.snare.noteStream$.next();
                 break;
-            case 'tom1':
-                this.drumService.triggers.tom1.noteStream$.next('tom1');
+            case 'rimshot':
+                this.drumService.triggers.rimshot.noteStream$.next();
+                break;
+            case 'flam':
+                this.drumService.triggers.flam.noteStream$.next();
+                break;
+            case 'htrimshot':
+                this.drumService.triggers.htrimshot.noteStream$.next();
+                break;
+               case 'tom1':
+                this.drumService.triggers.tom1.noteStream$.next();
                 break;
             case 'tom2':
-                this.drumService.triggers.tom2.noteStream$.next('tom2');
+                this.drumService.triggers.tom2.noteStream$.next();
                 break;
             case 'hihat':
-                this.drumService.triggers.hihat.noteStream$.next('hihat');
+                this.drumService.triggers.hihat.noteStream$.next();
+                this.drumService.triggers.hihatopen.noteStream$.next('stop');
                 break;
-            case 'crash':
-                this.drumService.triggers.crash.noteStream$.next('crash');
+            case 'hihatopen':
+                this.drumService.triggers.hihatopen.noteStream$.next();
+                break;
+             case 'crash':
+                this.drumService.triggers.crash.noteStream$.next();
                 break;
             case 'ride':
-                this.drumService.triggers.ride.noteStream$.next('ride');
+                this.drumService.triggers.ride.noteStream$.next();
                 break;
-            default:
+            case 'ping':
+                this.drumService.triggers.ping.noteStream$.next();
+                break;
+             default:
                 console.error(`I don't know this note`);
         }
     }

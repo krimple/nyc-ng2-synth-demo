@@ -34,6 +34,7 @@ export class SynthNote {
     'D#8': 4978.03, 'Eb8': 4978.0 };
 
   protected _note: string;
+  protected gainNode: GainNode;
   protected _frequency: number;
   protected oscillator: OscillatorNode;
 
@@ -42,7 +43,9 @@ export class SynthNote {
     this._frequency = SynthNote.noteMappings[note];
     this.oscillator = audioContext.createOscillator();
     this.oscillator.frequency.value = this._frequency;
-
+    this.gainNode = audioContext.createGain();
+    this.gainNode.gain.value = 0.2;
+    this.gainNode.connect(audioBusNode);
     // TODO - externalize and control in one shot... Maybe
     this.oscillator.type = 'sawtooth';
     this.oscillator.start();
@@ -58,13 +61,13 @@ export class SynthNote {
 
   public play() {
     //console.log('playing', this._note);
-    this.oscillator.connect(this.audioBusNode);
+    this.oscillator.connect(this.gainNode);
   }
 
   public stop() {
     //console.log('stopping', this._note);
     try {
-        this.oscillator.disconnect(this.audioBusNode);
+        this.oscillator.disconnect(this.gainNode);
     } catch (e) {
         console.error('tried to disconnect, error was', e);
     }
