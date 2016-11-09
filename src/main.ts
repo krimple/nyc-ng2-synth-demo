@@ -27,6 +27,9 @@ if (window[ctxName] && window[ctxName].state === 'suspended') {
     document.body.addEventListener('touchend', resume, false);
 }
 
+// prevent right click
+window.addEventListener("contextmenu", function(e) { e.preventDefault(); })
+
 // end hackity hackity hack
 
 if (environment.production) {

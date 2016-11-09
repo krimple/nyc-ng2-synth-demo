@@ -6,6 +6,9 @@ import {SynthNoteMessage, SynthNoteOff, SynthNoteOn} from "../../models/synth-no
 @Injectable()
 export class SynthesisService {
 
+  private audioContext: AudioContext;
+  private targetNode: AudioNode;
+
   // send a message to the synth upon receipt from outside world
   public receiveMessage(message: SynthNoteMessage) {
     this.noteStream$.next(message);
@@ -23,8 +26,10 @@ export class SynthesisService {
   constructor() { } 
   
   public setup(audioContext: AudioContext, targetNode: AudioNode) {
+    this.audioContext = audioContext;
+    this.targetNode = targetNode;
     this.noteStream$ = new Subject<SynthNoteOn| SynthNoteOff>();
-    this.setupNotes(audioContext, targetNode);
+    //this.setupNotes(audioContext, targetNode);
     this.setupSubscriptions();
   }
 
@@ -87,13 +92,13 @@ export class SynthesisService {
     this.noteStream$
       .subscribe(
         (message: SynthNoteMessage) => {
-          let synthNote: SynthNote = self.notes[message.note];
-          if (message.action === "OFF")  {
-              synthNote.stop();
-          } else if (message.action === "ON") {
+          if (message instanceof SynthNoteOn) {
+              console.log('playing message', message);
+              let synthNote: SynthNote = new SynthNote(message.note, self.audioContext, self.targetNode);
               synthNote.play();
           } else {
-              console.log(JSON.stringify(message));
+              console.log('unknown message');
+              console.dir(message);
           }
         }
       );

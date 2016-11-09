@@ -13,18 +13,18 @@ export class DrumPCMTriggeringService {
   setup(context: AudioContext, targetNode: AudioNode) {
       let self = this;
       this.triggers = {
-          bass: new Trigger('assets/drums/bass-thud-stereo.mp3'),
-          hihat: new Trigger('assets/drums/hi-hat-closed.mp3'),
-          hihatopen: new Trigger('assets/drums/hi-hat-open.mp3'),
-          snare: new Trigger('assets/drums/ringing-snare.mp3'),
-          flam: new Trigger('assets/drums/snare-flam.mp3'),
-          rimshot: new Trigger('assets/drums/snare-rimshot.mp3'),
-          htrimshot: new Trigger('assets/drums/hi-tom-rimshot.mp3'),
-          tom1: new Trigger('assets/drums/hi-tom-normal.mp3'),
-          tom2: new Trigger('assets/drums/low-tom.mp3'),
-          crash: new Trigger('assets/drums/crash-trash.mp3'),
-          ride: new Trigger('assets/drums/ride-standard.mp3'),
-          ping: new Trigger('assets/drums/ride-ping.mp3')
+          bass: new Trigger('assets/drums/bass-thud.wav'),
+          hihat: new Trigger('assets/drums/hi-hat-closed.wav'),
+          hihatopen: new Trigger('assets/drums/hi-hat-open.wav'),
+          snare: new Trigger('assets/drums/ringing-snare.wav'),
+          flam: new Trigger('assets/drums/snare-flam.wav'),
+          rimshot: new Trigger('assets/drums/snare-rimshot.wav'),
+          htrimshot: new Trigger('assets/drums/hi-tom-rimshot.wav'),
+          tom1: new Trigger('assets/drums/hi-tom-normal.wav'),
+          tom2: new Trigger('assets/drums/low-tom.wav'),
+          crash: new Trigger('assets/drums/crash-trash.wav'),
+          ride: new Trigger('assets/drums/ride-standard.wav'),
+          ping: new Trigger('assets/drums/ride-ping.wav')
       };
 
       this.loadSamples(context).then(() => {

@@ -37,6 +37,7 @@ export class SynthNote {
   protected gainNode: GainNode;
   protected _frequency: number;
   protected oscillator: OscillatorNode;
+  protected playing: boolean = false;
 
   constructor(note: string, private audioContext: AudioContext, private audioBusNode: AudioNode) {
     this._note = note;
@@ -60,43 +61,13 @@ export class SynthNote {
   }
 
   public play() {
-    //console.log('playing', this._note);
     this.oscillator.connect(this.gainNode);
-  }
-
-  public stop() {
-    //console.log('stopping', this._note);
-    try {
-        this.oscillator.disconnect(this.gainNode);
-    } catch (e) {
-        console.error('tried to disconnect, error was', e);
-    }
+    this.gainNode.gain.linearRampToValueAtTime(0, this.audioContext.currentTime + 0.5);
+    let self = this;
+    setTimeout(() => {
+       self.oscillator.disconnect(self.gainNode);
+       self.gainNode.disconnect(self.audioBusNode);
+    }, 2000);
   }
 }
 
-
-/*{
-
-  oscillator: Oscillator;
-
-  constructor(private note: string,
-  private waveForm: string,
-  private noteFreq: number,
-  private audioContext: AudioContext,
-  private compressor: DynamicsCompressorNode,
-  private broadcastStream$: Subject<SynthInputMessage>) {
-  this.oscillator = new Oscillator(noteFreq, waveForm, audioContext, compressor);
-}
-
-public play() {
-  this.oscillator.play();
-}
-
-public stop() {
-  this.oscillator.stop();
-}
-
-public bend(value) {
-  this.oscillator.bend(value);
-}
-}*/
