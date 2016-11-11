@@ -1,5 +1,5 @@
 import {Component, OnInit} from "@angular/core";
-import {DrumPCMTriggeringService} from "../../pipeline/synthesis/drum-pcm-triggering.service";
+import {DrumPCMTriggeringService} from "../../services/pipeline/synthesis/drum-pcm-triggering.service";
 import {SequencerService} from "../../services/sequencer.service";
 import {Observable} from "rxjs";
 @Component({
@@ -69,5 +69,9 @@ export class DrumSetComponent {
 
   playback() {
     this.sequencer.playback();
+  }
+
+  ngOnDestroy() {
+    console.log('going bye bye');
   }
 }

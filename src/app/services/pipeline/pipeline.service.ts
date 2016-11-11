@@ -3,7 +3,7 @@ import { SynthesisService } from './synthesis/synthesis.service';
 import { AudioOutputService } from './outputs/audio-output.service';
 import {Injectable} from "@angular/core";
 import {Subject} from "rxjs";
-import {SynthNoteMessage, SynthNoteOn, SynthNoteOff} from "../models/synth-note-message";
+import {SynthNoteMessage, SynthNoteOn, SynthNoteOff} from "../../models/synth-note-message";
 import {DrumPCMTriggeringService} from './synthesis/drum-pcm-triggering.service';
 
 @Injectable()

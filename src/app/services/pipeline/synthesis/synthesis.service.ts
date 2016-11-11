@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
-import { SynthNote } from '../../models/synth-note';
-import {SynthNoteMessage, SynthNoteOff, SynthNoteOn} from "../../models/synth-note-message";
+import { SynthNote } from '../../../models/synth-note';
+import {SynthNoteMessage, SynthNoteOff, SynthNoteOn} from "../../../models/synth-note-message";
 
 @Injectable()
 export class SynthesisService {
@@ -23,8 +23,8 @@ export class SynthesisService {
   // central switchboard observable / observer
   public noteStream$: Subject<SynthNoteOn| SynthNoteOff>;
 
-  constructor() { } 
-  
+  constructor() { }
+
   public setup(audioContext: AudioContext, targetNode: AudioNode) {
     this.audioContext = audioContext;
     this.targetNode = targetNode;

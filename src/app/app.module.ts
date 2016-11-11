@@ -4,18 +4,18 @@ import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 
 import { AppComponent } from './app.component';
-import { PianoKeyboardComponent } from './keyboard/piano/piano-keyboard.component';
 import { ControlPanelComponent } from './control-panel/control-panel.component';
-import { MidiInputService } from './pipeline/inputs/midi-input.service';
-import { AudioOutputService } from './pipeline/outputs/audio-output.service';
-import { SynthesisService } from './pipeline/synthesis/synthesis.service';
-import { PipelineService } from './pipeline/pipeline.service';
-import { DrumPCMTriggeringService } from './pipeline/synthesis/drum-pcm-triggering.service';
-import {DrumSetComponent} from "./keyboard/drumset/drum-set.component";
-import {BluesKeyboardComponent} from "./keyboard/blues/blues-keyboard.component";
-import {MinorBluesKeyboardComponent} from "./keyboard/minorblues/minor-blues-keyboard.component";
-import {PolysynthRoutingModule} from "./app-routing.module";
-import {IonianKeyboardComponent} from "./keyboard/ionian/ionian-keyboard.component";
+// import barrels
+import { MidiInputService, AudioOutputService,
+         SynthesisService, PipelineService,
+         DrumPCMTriggeringService } from './services';
+import { BluesKeyboardComponent,
+         DrumSetComponent,
+         IonianKeyboardComponent,
+         MinorBluesKeyboardComponent,
+         PianoKeyboardComponent } from './keyboard';
+
+import { PolysynthRoutingModule } from "./app-routing.module";
 
 @NgModule({
   declarations: [

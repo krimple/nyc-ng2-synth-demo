@@ -1,7 +1,7 @@
 /* tslint:disable:no-unused-variable */
 
 import { TestBed, async } from '@angular/core/testing';
-import {PipelineService} from "../../pipeline/pipeline.service";
+import {PipelineService} from "../../services/pipeline/pipeline.service";
 
 describe('Component: Keyboard', () => {
   it('should create an instance', () => {

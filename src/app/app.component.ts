@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { PipelineService } from './pipeline/pipeline.service';
+import { PipelineService } from './services/pipeline/pipeline.service';
 
 @Component({
   selector: 'polysynth-root',

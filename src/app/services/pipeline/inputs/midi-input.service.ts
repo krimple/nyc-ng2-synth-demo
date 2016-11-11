@@ -1,6 +1,6 @@
 import {Subject} from 'rxjs';
 import {Injectable} from '@angular/core';
-import {SynthNoteMessage, SynthNoteOff, SynthNoteOn} from "../../models/synth-note-message";
+import {SynthNoteMessage, SynthNoteOff, SynthNoteOn} from "../../../models/synth-note-message";
 
 @Injectable()
 export class MidiInputService {

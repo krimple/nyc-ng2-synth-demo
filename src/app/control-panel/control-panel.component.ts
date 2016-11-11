@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { MidiInputService } from '../pipeline/inputs/midi-input.service';
+import { MidiInputService } from '../services/pipeline/inputs/midi-input.service';
 
 // TODO - REALLY REFACTOR
 @Component({

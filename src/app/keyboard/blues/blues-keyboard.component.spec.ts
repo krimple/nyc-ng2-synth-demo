@@ -2,7 +2,7 @@
 
 import { TestBed, async } from '@angular/core/testing';
 import { BluesKeyboardComponent } from './blues-keyboard.component';
-import {PipelineService} from "../../pipeline/pipeline.service";
+import {PipelineService} from "../../services/pipeline/pipeline.service";
 
 describe('Component: Keyboard', () => {
   it('should create an instance', () => {

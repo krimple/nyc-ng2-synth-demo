@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Http, Response, BaseRequestOptions, ResponseContentType } from '@angular/http';
-import {Sample} from "../../models/sample";
+import {Sample} from '../../../models/sample';
 import {Subject} from "rxjs";
 
 @Injectable()
