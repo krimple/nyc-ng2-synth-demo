@@ -29,7 +29,8 @@
 #include <MPR121.h>
 #include <Wire.h>
 
-MIDIEvent eNote, eMod;
+MIDIEvent eNote;
+MIDIEvent eMod;
 
 #define numElectrodes 12
 
@@ -54,7 +55,6 @@ void setup() {
  
   eNote.type = 0x08;
   eNote.m3 = 127;  // maximum volume
-  eMod.type = 0x01;
   
   pinMode(LED_BUILTIN, OUTPUT);
   //analogReadResolution(8);
@@ -64,12 +64,6 @@ void readData() {
   volVal = analogRead(volPin);
   freqVal = analogRead(freqPin);
   waveFormVal = analogRead(waveFormPin);    
-}
-
-void computeDelta() {
-  volValDelta = abs(volVal - prevVolVal);
-  freqDelta = abs(freqVal - prevFreqVal);
-  waveFormDelta = abs(waveFormVal - prevWaveFormVal);
 }
 
 void updateTouchElectrodes(){
@@ -110,17 +104,43 @@ void loop() {
   
   readData();
 
-  computeDelta();
-    
-  // adjust mod wheel value
-  if (freqDelta > 2) {
-    Serial.println(freqVal);
-    eMod.type = 0x01;
-    eMod.m1 = (int) ((freqVal / 1023.0) * 127);
+  // adjust waveform value
+  byte sampleWaveFormVal = (byte)(waveFormVal / 341);
+  if (sampleWaveFormVal != prevWaveFormVal) {
+    Serial.println(sampleWaveFormVal);
+    eMod.type = 0x08;
+    eMod.m1 = 0x91;
+    eMod.m2 = 0x02;
+    eMod.m3 = sampleWaveFormVal;
     MIDIUSB.write(eMod);
     MIDIUSB.flush();
-    // Serial.println(e.m2);
-    prevFreqVal = freqVal;
+    prevWaveFormVal = sampleWaveFormVal;
+  }
+
+  byte sampleFreqVal = (byte) ((freqVal / 1023.0) * 127);
+  // adjust mod wheel value (LFO modulating frequency)
+  if (sampleFreqVal != prevFreqVal) {
+    Serial.println(sampleFreqVal);
+    eMod.type = 0x08;
+    eMod.m1 = 0x91;
+    eMod.m2 = 0x01;
+    eMod.m3 = sampleFreqVal;
+    MIDIUSB.write(eMod);
+    MIDIUSB.flush();
+    prevFreqVal = sampleFreqVal;
+  }
+
+  byte sampleVolVal = (byte) ((volVal / 1023.0) * 127);
+  // adjust volume value
+  if (sampleVolVal != prevVolVal) {
+    Serial.println(sampleVolVal);
+    eMod.type = 0x08;
+    eMod.m1 = 0x91;
+    eMod.m2 = 0x03;
+    eMod.m3 = sampleVolVal;
+    MIDIUSB.write(eMod);
+    MIDIUSB.flush();
+    prevVolVal = sampleVolVal;
   }
 
 }

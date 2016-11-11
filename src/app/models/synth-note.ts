@@ -1,7 +1,6 @@
 import 'rxjs/add/operator/filter';
 
 export class SynthNote {
-
   private static noteMappings = {
     'C0': 16.35, 'C#0': 17.32, 'Db0': 17.32, 'D0': 18.35, 'D#0': 19.45,
     'Eb0': 19.45, 'E0': 20.60, 'F0': 21.83, 'F#0': 23.12, 'Gb0': 23.12,

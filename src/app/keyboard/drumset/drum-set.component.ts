@@ -1,5 +1,7 @@
-import {Component} from "@angular/core";
+import {Component, OnInit} from "@angular/core";
 import {DrumPCMTriggeringService} from "../../pipeline/synthesis/drum-pcm-triggering.service";
+import {SequencerService} from "../../services/sequencer.service";
+import {Observable} from "rxjs";
 @Component({
    selector: 'synth-drumset',
    styles: [
@@ -20,7 +22,17 @@ import {DrumPCMTriggeringService} from "../../pipeline/synthesis/drum-pcm-trigge
          background-color: darkblue;
       }`
    ],
+   providers: [
+     SequencerService
+   ],
    template: `
+<div class="row">
+  <div class="col-xs-12 center">
+    <button class="btn btn-large btn-primary" (click)="record()">Record!</button>
+    <button class="btn btn-large btn-primary" (click)="stopRecording()">Stop!</button>
+    <button class="btn btn-large btn-primary" (click)="playback()">Playback!</button>
+  </div>
+</div>
   <div class="trigger-blocks">
   <div class="trigger-block" (touchstart)="play('bass')">Bass</div>
   <div class="trigger-block" (touchstart)="play('snare')">Snare</div>
@@ -37,8 +49,16 @@ import {DrumPCMTriggeringService} from "../../pipeline/synthesis/drum-pcm-trigge
   </div>
    `
 })
-export class DrumSetComponent {
-   constructor(private drumService: DrumPCMTriggeringService) { }
+export class DrumSetComponent implements OnInit {
+
+   ngOnInit() {
+       Observable.merge(this.drumService.triggers.bass,
+                        this.drumService.triggers.crash,
+                        this.drumService.triggers.flam,
+                        this.drumService.triggers.hihat,
+                        this.drumService.triggers.hihatopen);
+   }
+   constructor(private sequencer: SequencerService, private drumService: DrumPCMTriggeringService) { }
 
    play(instrument: string) {
         console.log(`playing ${instrument}`);
@@ -84,4 +104,15 @@ export class DrumSetComponent {
                 console.error(`I don't know this note`);
         }
     }
+  record() {
+    this.sequencer.record();
+  }
+
+  stopRecording() {
+    this.sequencer.stop();
+  }
+
+  playback() {
+    this.sequencer.playback();
+  }
 }
