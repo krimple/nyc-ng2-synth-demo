@@ -1,65 +1,53 @@
 import { Injectable } from '@angular/core';
 import { Http, Response, BaseRequestOptions, ResponseContentType } from '@angular/http';
-import {Trigger} from "../../models/trigger";
+import {Sample} from "../../models/sample";
+import {Subject} from "rxjs";
 
 @Injectable()
 export class DrumPCMTriggeringService {
 
-  public triggers: any;
+  public samples: any;
+  public noteStream$ = new Subject<string>();
 
   constructor(private http: Http) {
   }
 
   setup(context: AudioContext, targetNode: AudioNode) {
       let self = this;
-      this.triggers = {
-          bass: new Trigger('assets/drums/bass-thud.wav'),
-          hihat: new Trigger('assets/drums/hi-hat-closed.wav'),
-          hihatopen: new Trigger('assets/drums/hi-hat-open.wav'),
-          snare: new Trigger('assets/drums/ringing-snare.wav'),
-          flam: new Trigger('assets/drums/snare-flam.wav'),
-          rimshot: new Trigger('assets/drums/snare-rimshot.wav'),
-          htrimshot: new Trigger('assets/drums/hi-tom-rimshot.wav'),
-          tom1: new Trigger('assets/drums/hi-tom-normal.wav'),
-          tom2: new Trigger('assets/drums/low-tom.wav'),
-          crash: new Trigger('assets/drums/crash-trash.wav'),
-          ride: new Trigger('assets/drums/ride-standard.wav'),
-          ping: new Trigger('assets/drums/ride-ping.wav')
+      this.samples = {
+          bass: new Sample('assets/drums/bass-thud.wav'),
+          hihat: new Sample('assets/drums/hi-hat-closed.wav'),
+          hihatopen: new Sample('assets/drums/hi-hat-open.wav'),
+          snare: new Sample('assets/drums/ringing-snare.wav'),
+          flam: new Sample('assets/drums/snare-flam.wav'),
+          rimshot: new Sample('assets/drums/snare-rimshot.wav'),
+          htrimshot: new Sample('assets/drums/hi-tom-rimshot.wav'),
+          tom1: new Sample('assets/drums/hi-tom-normal.wav'),
+          tom2: new Sample('assets/drums/low-tom.wav'),
+          crash: new Sample('assets/drums/crash-trash.wav'),
+          ride: new Sample('assets/drums/ride-standard.wav'),
+          ping: new Sample('assets/drums/ride-ping.wav')
       };
 
       this.loadSamples(context).then(() => {
           console.log('samples loaded...  Subscribing to streams');
-          this.subscribeTo(context, self.triggers.bass, targetNode);
-          this.subscribeTo(context, self.triggers.snare, targetNode);
-          this.subscribeTo(context, self.triggers.flam, targetNode);
-          this.subscribeTo(context, self.triggers.rimshot, targetNode);
-          this.subscribeTo(context, self.triggers.htrimshot, targetNode);
-          this.subscribeTo(context, self.triggers.tom1, targetNode);
-          this.subscribeTo(context, self.triggers.tom2, targetNode);
-          this.subscribeTo(context, self.triggers.hihat, targetNode);
-          this.subscribeTo(context, self.triggers.hihatopen, targetNode);
-          this.subscribeTo(context, self.triggers.crash, targetNode);
-          this.subscribeTo(context, self.triggers.ride, targetNode);
-          this.subscribeTo(context, self.triggers.ping, targetNode);
+          this.subscribeTo(context, self.samples, targetNode);
       });
   }
 
-  subscribeTo(context: AudioContext, trigger: Trigger, targetNode: AudioNode) {
-      trigger.noteStream$.subscribe(
-          (value: string) => {
-            if (value === 'stop') {
-                if (trigger.playing) {
-                    trigger.gain.disconnect(targetNode);
-                }
-                trigger.playing = false;
-            } else {
-                trigger.playing = true;
+  subscribeTo(context: AudioContext, sample: Sample, targetNode: AudioNode) {
+      let self = this;
+      self.noteStream$.subscribe(
+          (instrument: string) => {
+            let sample: Sample = self.samples[instrument];
+            if (sample) {
+                sample.playing = true;
                 let source = context.createBufferSource();
-                trigger.gain = context.createGain();
-                trigger.gain.gain.value = 1.0;
-                source.connect(trigger.gain);
-                trigger.gain.connect(targetNode);
-                source.buffer = trigger.audioBuffer;
+                sample.gain = context.createGain();
+                sample.gain.gain.value = 1.0;
+                source.connect(sample.gain);
+                sample.gain.connect(targetNode);
+                source.buffer = sample.audioBuffer;
                 source.start(0);
             }
           },
@@ -75,38 +63,38 @@ export class DrumPCMTriggeringService {
       var self = this;
       return new Promise((resolve, reject) => {
        Promise.all([
-        self.loadSample(context, this.triggers.bass),
-        self.loadSample(context, this.triggers.crash),
-        self.loadSample(context, this.triggers.hihat),
-        self.loadSample(context, this.triggers.hihatopen),
-        self.loadSample(context, this.triggers.ride),
-        self.loadSample(context, this.triggers.snare),
-        self.loadSample(context, this.triggers.flam),
-        self.loadSample(context, this.triggers.rimshot),
-        self.loadSample(context, this.triggers.ping),
-        self.loadSample(context, this.triggers.htrimshot),
-        self.loadSample(context, this.triggers.tom1),
-        self.loadSample(context, this.triggers.tom2)
+        self.loadSample(context, this.samples.bass),
+        self.loadSample(context, this.samples.crash),
+        self.loadSample(context, this.samples.hihat),
+        self.loadSample(context, this.samples.hihatopen),
+        self.loadSample(context, this.samples.ride),
+        self.loadSample(context, this.samples.snare),
+        self.loadSample(context, this.samples.flam),
+        self.loadSample(context, this.samples.rimshot),
+        self.loadSample(context, this.samples.ping),
+        self.loadSample(context, this.samples.htrimshot),
+        self.loadSample(context, this.samples.tom1),
+        self.loadSample(context, this.samples.tom2)
        ])
       .then(() => {
-          console.log('samples loaded...')
+          console.log('samples loaded...');
           resolve();
       });
     });
   }
 
-  private loadSample(context: AudioContext, trigger: Trigger): Promise<void> {
+  private loadSample(context: AudioContext, sample: Sample): Promise<void> {
      let options = new BaseRequestOptions();
      options.responseType = ResponseContentType.ArrayBuffer;
      return new Promise((resolve, reject) => {
-       this.http.get(trigger.fileName, options)
+       this.http.get(sample.fileName, options)
          .map((response: Response) => {
            return response.arrayBuffer();
          })
          .subscribe((rawBuffer: ArrayBuffer) => {
-             trigger.arrayBuffer = rawBuffer;
+             sample.arrayBuffer = rawBuffer;
              context.decodeAudioData(rawBuffer, (buffer: AudioBuffer) => {
-               trigger.audioBuffer = buffer;
+               sample.audioBuffer = buffer;
                resolve();
              });
          },

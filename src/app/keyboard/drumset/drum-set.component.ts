@@ -49,61 +49,16 @@ import {Observable} from "rxjs";
   </div>
    `
 })
-export class DrumSetComponent implements OnInit {
+export class DrumSetComponent {
 
-   ngOnInit() {
-       Observable.merge(this.drumService.triggers.bass,
-                        this.drumService.triggers.crash,
-                        this.drumService.triggers.flam,
-                        this.drumService.triggers.hihat,
-                        this.drumService.triggers.hihatopen);
+   constructor(private sequencer: SequencerService, private drumService: DrumPCMTriggeringService) {
+     this.sequencer.setDataStream(this.drumService.noteStream$);
    }
-   constructor(private sequencer: SequencerService, private drumService: DrumPCMTriggeringService) { }
 
-   play(instrument: string) {
-        console.log(`playing ${instrument}`);
-        switch (instrument) {
-            case 'bass':
-                this.drumService.triggers.bass.noteStream$.next();
-                break;
-            case 'snare':
-                this.drumService.triggers.snare.noteStream$.next();
-                break;
-            case 'rimshot':
-                this.drumService.triggers.rimshot.noteStream$.next();
-                break;
-            case 'flam':
-                this.drumService.triggers.flam.noteStream$.next();
-                break;
-            case 'htrimshot':
-                this.drumService.triggers.htrimshot.noteStream$.next();
-                break;
-               case 'tom1':
-                this.drumService.triggers.tom1.noteStream$.next();
-                break;
-            case 'tom2':
-                this.drumService.triggers.tom2.noteStream$.next();
-                break;
-            case 'hihat':
-                this.drumService.triggers.hihat.noteStream$.next();
-                this.drumService.triggers.hihatopen.noteStream$.next('stop');
-                break;
-            case 'hihatopen':
-                this.drumService.triggers.hihatopen.noteStream$.next();
-                break;
-             case 'crash':
-                this.drumService.triggers.crash.noteStream$.next();
-                break;
-            case 'ride':
-                this.drumService.triggers.ride.noteStream$.next();
-                break;
-            case 'ping':
-                this.drumService.triggers.ping.noteStream$.next();
-                break;
-             default:
-                console.error(`I don't know this note`);
-        }
-    }
+  play(instrument: string) {
+   this.drumService.noteStream$.next(instrument);
+  }
+
   record() {
     this.sequencer.record();
   }
