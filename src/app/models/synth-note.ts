@@ -38,7 +38,7 @@ export class SynthNote {
   protected oscillator: OscillatorNode;
   protected playing: boolean = false;
 
-  constructor(note: string, private audioContext: AudioContext, private audioBusNode: AudioNode) {
+  constructor(note: string, waveform: string, private audioContext: AudioContext, private audioBusNode: AudioNode) {
     this._note = note;
     this._frequency = SynthNote.noteMappings[note];
     this.oscillator = audioContext.createOscillator();
@@ -47,7 +47,7 @@ export class SynthNote {
     this.gainNode.gain.value = 0.2;
     this.gainNode.connect(audioBusNode);
     // TODO - externalize and control in one shot... Maybe
-    this.oscillator.type = 'sawtooth';
+    this.oscillator.type = waveform;
     this.oscillator.start();
   }
 

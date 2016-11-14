@@ -13,9 +13,9 @@ export class IonianKeyboardComponent {
   constructor(private pipelineService: PipelineService) { }
 
   playNote(noteValue) {
-    this.pipelineService.noteStream$.next(new SynthNoteOn(noteValue));
+    this.pipelineService.synthStream$.next(new SynthNoteOn(noteValue));
   }
   stopNote(noteValue) {
-    this.pipelineService.noteStream$.next(new SynthNoteOff(noteValue));
+    this.pipelineService.synthStream$.next(new SynthNoteOff(noteValue));
   }
 }

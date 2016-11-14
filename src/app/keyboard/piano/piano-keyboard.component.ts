@@ -13,16 +13,16 @@ import {SequencerService} from "../../services/sequencer.service";
 export class PianoKeyboardComponent {
 
   constructor(private sequencer: SequencerService, private pipelineService: PipelineService) {
-    sequencer.setDataStream(pipelineService.noteStream$);
+    sequencer.setDataStream(pipelineService.synthStream$);
   }
 
   keyboardType: string = 'ionian';
 
   playNote(noteValue) {
-    this.pipelineService.noteStream$.next(new SynthNoteOn(noteValue));
+    this.pipelineService.synthStream$.next(new SynthNoteOn(noteValue));
   }
   stopNote(noteValue) {
-    this.pipelineService.noteStream$.next(new SynthNoteOff(noteValue));
+    this.pipelineService.synthStream$.next(new SynthNoteOff(noteValue));
   }
 
   record() {

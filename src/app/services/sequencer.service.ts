@@ -1,10 +1,7 @@
 import { Injectable } from '@angular/core';
 import {Observable, Subject, Subscription} from "rxjs";
 import {SubjectSubscription} from "rxjs/SubjectSubscription";
-
-class StreamEvent {
-  constructor(public payload: any, public timeOffset: number) { }
-}
+import {StreamEvent} from "../models/stream-event";
 
 @Injectable()
 export class SequencerService {

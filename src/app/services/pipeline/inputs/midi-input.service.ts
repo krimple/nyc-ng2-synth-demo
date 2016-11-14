@@ -1,6 +1,9 @@
 import {Subject} from 'rxjs';
 import {Injectable} from '@angular/core';
-import {SynthNoteMessage, SynthNoteOff, SynthNoteOn} from "../../../models/synth-note-message";
+import {
+  SynthNoteMessage, SynthNoteOff, SynthNoteOn, VolumeChange,
+  SynthMessage, WaveformChange
+} from "../../../models/synth-note-message";
 
 @Injectable()
 export class MidiInputService {
@@ -19,15 +22,15 @@ export class MidiInputService {
         84: 'C8', 85: 'D#8', 86: 'F8', 87: 'F#8', 88: 'G8', 89: 'A#8',
     };
 
-    private _noteOutputStream: Subject<SynthNoteMessage>;
+    private _noteOutputStream$: Subject<SynthMessage>;
 
     get noteStream$() {
-        return this._noteOutputStream;
+        return this._noteOutputStream$;
     }
 
     setup(): Promise<void> {
         // will emit notes to target
-        this._noteOutputStream = new Subject<SynthNoteMessage>();
+        this._noteOutputStream$ = new Subject<SynthMessage>();
 
         return new Promise((resolve, reject) => {
             if ("navigator" in window && "requestMIDIAccess" in window['navigator']) {
@@ -88,20 +91,22 @@ export class MidiInputService {
                 if (message.data[1] === 1) {
                     console.log('mod level set to to', message.data[2]);
                 } else if (message.data[1] === 2) {
-                    console.log('waveform set to', message.data[2]);
+                  let wfc = new WaveformChange(message.data[2]);
+                  console.log('sending waveform change', wfc);
+                  this._noteOutputStream$.next(wfc);
                 } else if (message.data[1] === 3) {
-                    console.log('volume set to', message.data[2]);
+                  this._noteOutputStream$.next(new VolumeChange(message.data[2]));
                 } else {
                     console.log('hell only knows the data you are sending...');
                 }
                 break;
             case 144:
                 // note on for midi message with proper number
-                this._noteOutputStream.next(
+                this._noteOutputStream$.next(
                     new SynthNoteOn(this.noteTransforms[message.data[1]]));
                 break;
             case 128:
-                this._noteOutputStream.next(
+                this._noteOutputStream$.next(
                     new SynthNoteOff(this.noteTransforms[message.data[1]]));
                 break;
             default:
