@@ -8,7 +8,7 @@ export class AudioOutputService {
   private mainMixOutput: AudioDestinationNode;
   private messageStream$: Subject<SynthMessage>;
 
-  configure(audioContext: AudioContext, messageStream$: Subject<SynthMessage>) {
+  setup(audioContext: AudioContext, messageStream$: Subject<SynthMessage>) {
     // wire up audio
     this.mainMixOutput = audioContext.destination;
     this.mainMixCompressor = audioContext.createDynamicsCompressor();

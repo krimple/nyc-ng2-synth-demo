@@ -14,6 +14,7 @@ export class PipelineService {
   // allow other objects to hook into the service and send messages
   private _synthStream$ = new Subject<SynthMessage>();
 
+  // only provide accessor, can't replace stream
   get synthStream$() {
     return this._synthStream$;
   }
@@ -28,33 +29,18 @@ export class PipelineService {
   begin() {
     let self = this;
     // setup outputs
-    this.audioOutputService.configure(this.audioContext, this.synthStream$);
+    this.audioOutputService.setup(this.audioContext, this.synthStream$);
 
     // setup synth
     this.synthesisService.setup(this.audioContext, this.audioOutputService.mainMixCompressor);
 
     // setup drum service
-    this.drumPCMTriggeringService.setup(this.audioContext, this.audioOutputService.mainMixCompressor);
+    this.drumPCMTriggeringService.setup(this.audioContext,
+                                        this.audioOutputService.mainMixCompressor,
+                                        this.synthStream$);
 
     // setup inputs
-    this.midiInputService.setup()
-      .then(
-        () => {
-          if (this.midiInputService.inputs.length > 0) {
-            self.midiInputService.connectDefaultInput();
-            // forward notes to the note input service
-            this.midiInputService.noteStream$.subscribe(
-                (message: SynthMessage) => {
-                    this.synthStream$.next(message);
-                });
-          } else {
-            console.log('no inputs available');
-          }
-        },
-          () => {
-              console.log("MIDI Unavailable");
-          }
-      );
+    this.midiInputService.setup(this.synthStream$);
 
     // now send all note inputs coming from midi and non-midi sources (web page components, etc)
     this.synthStream$.subscribe(

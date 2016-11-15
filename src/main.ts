@@ -23,7 +23,6 @@ if (window[ctxName] && window[ctxName].state === 'suspended') {
         }
     }, 0);
 
-
     document.body.addEventListener('touchend', resume, false);
 }
 

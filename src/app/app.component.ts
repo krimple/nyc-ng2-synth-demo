@@ -3,7 +3,6 @@ import { PipelineService } from './services/pipeline/pipeline.service';
 
 @Component({
   selector: 'polysynth-root',
-  // templateUrl: './app.component.html',
   templateUrl: 'app.component.html'
 })
 export class AppComponent {

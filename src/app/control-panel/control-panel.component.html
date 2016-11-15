@@ -1,3 +1,9 @@
- <button (click)="emitSysex()">SYSEX</button>
- <hr>
- <input type="range" min="-500" max="500" (change)="bendNote($event)">
+<h3>RxJS and Angular 2 Synth - Control Panel</h3>
+<div class="row">
+  <div class="col-xs-12 center">
+    <button class="btn btn-large btn-primary" (click)="record()">Record!</button>
+    <button class="btn btn-large btn-primary" (click)="stop()">Stop!</button>
+    <button class="btn btn-large btn-primary" (click)="playback()">Playback!</button>
+  </div>
+</div>
+<hr>

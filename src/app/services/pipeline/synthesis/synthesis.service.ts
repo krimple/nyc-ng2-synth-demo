@@ -43,7 +43,8 @@ export class SynthesisService {
         (message: SynthMessage) => {
           if (message instanceof SynthNoteOn) {
               console.log('playing message', message, 'with waveform', self.currentWaveForm);
-              let synthNote: SynthNote = new SynthNote(message.note, self.currentWaveForm, self.audioContext, self.targetNode);
+              let synthNote: SynthNote = new SynthNote(message.note, self.currentWaveForm,
+                                                       self.audioContext, self.targetNode);
               synthNote.play();
           } else if (message instanceof ClockTick) {
             console.log('pulse!');

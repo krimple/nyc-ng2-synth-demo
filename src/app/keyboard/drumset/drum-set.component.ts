@@ -2,6 +2,8 @@ import {Component, OnInit} from "@angular/core";
 import {DrumPCMTriggeringService} from "../../services/pipeline/synthesis/drum-pcm-triggering.service";
 import {SequencerService} from "../../services/sequencer.service";
 import {Observable} from "rxjs";
+import {PipelineService} from "../../services/pipeline/pipeline.service";
+import {TriggerSample} from "../../models/synth-note-message";
 @Component({
    selector: 'synth-drumset',
    styles: [
@@ -26,14 +28,7 @@ import {Observable} from "rxjs";
      SequencerService
    ],
    template: `
-<div class="row">
-  <div class="col-xs-12 center">
-    <button class="btn btn-large btn-primary" (click)="record()">Record!</button>
-    <button class="btn btn-large btn-primary" (click)="stopRecording()">Stop!</button>
-    <button class="btn btn-large btn-primary" (click)="playback()">Playback!</button>
-  </div>
-</div>
-  <div class="trigger-blocks">
+<div class="trigger-blocks">
   <div class="trigger-block" (touchstart)="play('bass')">Bass</div>
   <div class="trigger-block" (touchstart)="play('snare')">Snare</div>
   <div class="trigger-block" (touchstart)="play('flam')">Flam</div>
@@ -51,27 +46,9 @@ import {Observable} from "rxjs";
 })
 export class DrumSetComponent {
 
-   constructor(private sequencer: SequencerService, private drumService: DrumPCMTriggeringService) {
-     this.sequencer.setDataStream(this.drumService.noteStream$);
-   }
+   constructor(private pipelineService: PipelineService) { }
 
   play(instrument: string) {
-   this.drumService.noteStream$.next(instrument);
-  }
-
-  record() {
-    this.sequencer.record();
-  }
-
-  stopRecording() {
-    this.sequencer.stop();
-  }
-
-  playback() {
-    this.sequencer.playback();
-  }
-
-  ngOnDestroy() {
-    console.log('going bye bye');
+     this.pipelineService.synthStream$.next(new TriggerSample(instrument));
   }
 }

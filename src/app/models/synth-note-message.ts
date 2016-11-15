@@ -33,6 +33,14 @@ export class SynthNoteOff extends SynthNoteMessage {
   }
 }
 
+export class TriggerSample extends SynthMessage {
+  public instrument: string;
+  constructor(instrument: string) {
+   super('SAMPLE!');
+   this.instrument = instrument;
+  }
+}
+
 export class ClockTick extends SynthMessage {
   constructor() {
     super('TICK');

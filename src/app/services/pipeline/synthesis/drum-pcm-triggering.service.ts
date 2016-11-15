@@ -2,19 +2,22 @@ import { Injectable } from '@angular/core';
 import { Http, Response, BaseRequestOptions, ResponseContentType } from '@angular/http';
 import {Sample} from '../../../models/sample';
 import {Subject} from "rxjs";
+import {SynthMessage, TriggerSample} from "../../../models/synth-note-message";
 
 @Injectable()
 export class DrumPCMTriggeringService {
 
   public samples: any;
-  public noteStream$ = new Subject<string>();
+  public synthStream$ = new Subject<SynthMessage>();
 
   constructor(private http: Http) {
   }
 
-  setup(context: AudioContext, targetNode: AudioNode) {
+  setup(context: AudioContext, targetNode: AudioNode, synthStream$: Subject<SynthMessage>) {
       let self = this;
-      this.samples = {
+      self.synthStream$ = synthStream$;
+
+      self.samples = {
           bass: new Sample('assets/drums/bass-thud.wav'),
           hihat: new Sample('assets/drums/hi-hat-closed.wav'),
           hihatopen: new Sample('assets/drums/hi-hat-open.wav'),
@@ -29,7 +32,7 @@ export class DrumPCMTriggeringService {
           ping: new Sample('assets/drums/ride-ping.wav')
       };
 
-      this.loadSamples(context).then(() => {
+      self.loadSamples(context).then(() => {
           console.log('samples loaded...  Subscribing to streams');
           this.subscribeTo(context, self.samples, targetNode);
       });
@@ -37,8 +40,13 @@ export class DrumPCMTriggeringService {
 
   subscribeTo(context: AudioContext, sample: Sample, targetNode: AudioNode) {
       let self = this;
-      self.noteStream$.subscribe(
-          (instrument: string) => {
+      // now sip please, get what you want and play it!
+      self.synthStream$
+          .filter((synthMessage: SynthMessage) => {
+              return synthMessage instanceof TriggerSample;
+          })
+          .subscribe((message: TriggerSample) => {
+            let instrument = message.instrument;
             let sample: Sample = self.samples[instrument];
             if (sample) {
                 sample.playing = true;
