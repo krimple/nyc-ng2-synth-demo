@@ -1,5 +1,7 @@
 # Polysynth
 
+[Demo](https://krimple.github.io/ng2-synth/piano)
+
 This is an example of a synthesizer and drum machine written using the WebAudio API, 
 WebMidi, the Angular 2.0 framework and RxJS Observables.
 
